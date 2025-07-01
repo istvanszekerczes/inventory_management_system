@@ -9,15 +9,19 @@ const __dirname = dirname(__filename);
 
 const DB_PATH = path.join(__dirname, 'db.json');
 
+// Segéd függvény a JSON file olvasására.
 function readDB() {
   const data = fs.readFileSync(DB_PATH, 'utf-8');
   return JSON.parse(data);
 }
 
+// Segéd függvény a JSON file írására.
 function writeDB(data) {
   fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
 }
 
+// 10 másodpercenként kiválaszt egy random tagot a JSON fájlból,
+//  utána pedig szintén random eldönti, hogy csökkent vagy növeli a mennyiségét.
 setInterval(() => {
   let inventory = readDB();
   let randomIndex = Math.floor(Math.random() * inventory.length);

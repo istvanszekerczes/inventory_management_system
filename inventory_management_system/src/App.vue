@@ -1,7 +1,7 @@
 <template>
     <div class="main-container">
         <h1>Inventory Management System</h1>
-        <div class="blured-overlay" v-if="showAlert">
+        <div class="blurred-overlay" v-if="showAlert">
           <div class="alert">
           <h2>Conflict!</h2>
           <h3>{{ itemName }}</h3>
@@ -13,7 +13,7 @@
         </div>
         
         <div id="wrapper">
-            <div v-for="item in data" :key="item.id">
+            <div class="item-inventory-item-div" v-for="item in data" :key="item.id">
                 <inventory-item
                     :name = 'item.name'
                     :image_url = 'item.image_url'
@@ -144,58 +144,5 @@ async function mergeQuantities() {
 </script>
 
 <style scoped>
-h1 {
-  color: rgb(0, 189, 126);
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-#wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 30px;
-}
-
-.alert {
-  width: fit-content;
-  text-align: center;
-  padding: 20px;
-  background-color: #272626;
-  color: #e28a10;
-  margin-bottom: 15px;
-  border: 1px solid;
-  border-radius: 8px;
-  border-color: #e28a10;
-}
-
-.alertButton {
-  margin: 10px;
-  background-color: #272626;
-  border-radius: 8px;
-  border: 1px solid #e28a10;
-  color: #e28a10;
-  font-size: 15px;
-  padding: 8px;
-  cursor: pointer; 
-}
-
-.alertButton:hover {
-   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-}
-
-.blured-overlay {
-  top: 0;
-  left: 0;
-  position: fixed;
-  z-index: 100;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); 
-  backdrop-filter: blur(5px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 </style>

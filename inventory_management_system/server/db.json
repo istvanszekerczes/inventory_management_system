@@ -3,42 +3,42 @@
     "id": "1",
     "name": "Sony WH-1000XM5",
     "image_url": "../src/assets/images/WH1000XM5B.png",
-    "quantity": 56,
-    "lastUpdated": 1751194188556
+    "quantity": 47,
+    "lastUpdated": 1751383217044
   },
   {
     "id": "2",
     "name": "Samsung Galaxy S24",
     "image_url": "../src/assets/images/galaxy-s24.png",
-    "quantity": 223,
-    "lastUpdated": 1751194207219
+    "quantity": 248,
+    "lastUpdated": 1751383136983
   },
   {
     "id": "3",
     "name": "Logitech MX Master 3S",
     "image_url": "../src/assets/images/mx-master.webp",
-    "quantity": 41,
-    "lastUpdated": 1751194227234
+    "quantity": 42,
+    "lastUpdated": 1751383036907
   },
   {
     "id": "4",
     "name": "Apple MacBook Air M3",
     "image_url": "../src/assets/images/macbook.png",
-    "quantity": 40,
-    "lastUpdated": 1751194197218
+    "quantity": 27,
+    "lastUpdated": 1751383227058
   },
   {
     "id": "5",
     "name": "LG C3 OLED TV",
     "image_url": "../src/assets/images/LG_OLED.png",
-    "quantity": 4,
-    "lastUpdated": 1751194067136
+    "quantity": 16,
+    "lastUpdated": 1751383156990
   },
   {
     "id": "6",
     "name": "DJI Mini 4 Pro",
     "image_url": "../src/assets/images/DJI_Mini.png",
-    "quantity": 33,
-    "lastUpdated": 1751194247246
+    "quantity": 28,
+    "lastUpdated": 1751383176995
   }
 ]
