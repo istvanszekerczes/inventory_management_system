@@ -38,9 +38,9 @@ const itemName = ref('');
 const conflictedItem = ref(null);
 const pendingChange = ref(0)
 
+// Amikor a komponens mounted lifecycle hook-ra kerül, lekéri az aktuális adatokat a szerverről.
 onMounted(async () => {
   try {
-    
     const response = await fetch('http://localhost:3000/api/inventory');
     showAlert.value = false;
 
@@ -48,10 +48,11 @@ onMounted(async () => {
 
     data.value = inventoryData;
   } catch (error) {
-    console.error("Could not fetch inventory:", error);
   }
 });
 
+// Megkapja a gyermekkomponenstől a változtatást, és elküldi a szervernek a frissítési kérést.
+// Ha a szerver ütközést észlelt megjeleníti a figyelmeztetést.
 async function sendUpdateToServer(updatedItem) {
   try {
     const response = await fetch('http://localhost:3000/api/inventory/update', {
@@ -63,14 +64,13 @@ async function sendUpdateToServer(updatedItem) {
     });
     
     if (response.status === 409) {
-      console.log("Conflict detected!");
       const serverResponse = await response.json();
       showAlert.value = true;
       itemName.value = updatedItem.name;
       conflictedItem.value = serverResponse;
       pendingChange.value = updatedItem.change;
       
-      
+      // Frissíti az ütközött item lokális mennyiségét a szerver állapotával.
       const index = data.value.findIndex(item => item.id === serverResponse.id);
       if (index !== -1) {
           data.value[index] = serverResponse;
@@ -85,7 +85,6 @@ async function sendUpdateToServer(updatedItem) {
     showAlert.value = false;
     
     const serverResponse = await response.json();
-    console.log("Update successful:", serverResponse);
 
     const index = data.value.findIndex(item => item.id === serverResponse.id);
     if (index !== -1) {
@@ -93,10 +92,11 @@ async function sendUpdateToServer(updatedItem) {
     }
 
   } catch (error) {
-    console.error("Could not update item on server:", error);
   }
 }
 
+// Bezárja a figyelmeztetést, így a felhasználó változtatását törli, és megjeleníti
+// a szerver aktuális állapotát.
 function dismiss() {
   showAlert.value = false;
   itemName.value = '';
@@ -105,6 +105,8 @@ function dismiss() {
 
 }
 
+// Az ütközött item mennyiségét kiszámolja úgy, hogy összeadja a szervereren lévő változat mennyiségét
+//  a user változtatásával (-1 vagy +1). Ezt követően elküldi a szervernek a változtatást.
 async function mergeQuantities() {
   showAlert.value = false;
 
@@ -125,7 +127,6 @@ async function mergeQuantities() {
 
 
     const serverResponse = await response.json();
-    console.log("Merge successful:", serverResponse);
     dismiss();
 
 
@@ -135,7 +136,6 @@ async function mergeQuantities() {
     }
 
   } catch (error){
-    console.error("Could not merge quantities:", error);
     dismiss();
   }
 

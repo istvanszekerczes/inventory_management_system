@@ -20,8 +20,9 @@ function writeDB(data) {
   fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
 }
 
-// 10 másodpercenként kiválaszt egy random tagot a JSON fájlból,
-//  utána pedig szintén random eldönti, hogy csökkent vagy növeli a mennyiségét.
+// 10 másodpercenként kiválaszt egy random elemet a JSON fájlból,
+// utána pedig szintén random eldönti, hogy csökkent vagy növeli a mennyiségét, majd frissíti
+// az utolsó módosítás Timestamp-jét.
 setInterval(() => {
   let inventory = readDB();
   let randomIndex = Math.floor(Math.random() * inventory.length);
@@ -31,6 +32,7 @@ setInterval(() => {
   randomItem.quantity += change;
   randomItem.lastUpdated = Date.now();
 
+  // Figyeli, hogy a mennyiség ne menjen negatívba.
   if (randomItem.quantity < 0) {
     randomItem.quantity = 0;
   }
@@ -71,6 +73,7 @@ const server = http.createServer((req, res) => {
     req.on('end', () => {
       const { id, quantity, lastUpdated } = JSON.parse(body);
 
+      // Megkeresi a POST-ban elküldött ID alapján az item-et.
       let inventory = readDB();
       const itemIndex = inventory.findIndex(item => item.id === id);
 
@@ -82,6 +85,9 @@ const server = http.createServer((req, res) => {
       
       const serverItem = inventory[itemIndex];   
 
+      // Itt vizsgálja, hogy a POST-ban elküldött item módosításának ideje régebbi e, mint a szerver oldalán.
+      // Ha igen, akkor akkor ütközést észlel és 409-es kódot küld a kliensnek, illetve elküldi az item-nek
+      // a szerver odlalán lévő állapotát, hogy a kliens frissíthesse magát.
       if (serverItem.lastUpdated > lastUpdated) {
         console.log(`Conflict detected for item ${id}: Client timestamp (${lastUpdated}) is older than server's (${serverItem.lastUpdated})`);
         res.writeHead(409, { 'Content-Type': 'application/json' });
@@ -89,6 +95,7 @@ const server = http.createServer((req, res) => {
         return;
       }
       
+      // Ha nincs ütközés frissíti az item-et a JSON fájlba.
       serverItem.quantity = quantity;
       serverItem.lastUpdated = Date.now();
       writeDB(inventory);
@@ -106,3 +113,6 @@ const server = http.createServer((req, res) => {
 server.listen(3000, () => {
   console.log(`Mock server is running at http://localhost:3000`);
 });
+
+// A szerver oldalán nincsen input validáció, illetve a race condition-re sem implementáltam megoldást,
+// a UI-ra koncentráltam.

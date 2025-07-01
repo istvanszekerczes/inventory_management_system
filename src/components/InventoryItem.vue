@@ -34,11 +34,13 @@ watch(() => props.localQuantity, (newVal) => {
   localQuantity.value = newVal;
 });
 
+// Növeli az adott item lokális mennyiség értékét, majd kéri a szerver frissítését.
 function incrementQuantity() {
   localQuantity.value++;
   emitUpdateRequest(1);
 }
 
+// Csökkenti az adott item lokális mennyiség értékét, majd kéri a szerver frissítését.
 function decrementQuantity() {
   if (localQuantity.value > 0) {
     localQuantity.value--;
@@ -46,6 +48,7 @@ function decrementQuantity() {
   }
 }
 
+// Kibocsát egy 'update-request' eseményt a szülő komponens felé a mennyiség változásának jelzésére.
 function emitUpdateRequest(change) {
   emit('update-request', {
     id: props.id,
@@ -55,6 +58,8 @@ function emitUpdateRequest(change) {
     change: change,
   });
 }
+
+// Olvashastóvá alakítja a Timestamp-et.
 const formattedTimestamp = computed(() => {
   return new Date(props.lastUpdated).toLocaleString('hu-HU');
 });
