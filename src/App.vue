@@ -37,11 +37,13 @@ const showAlert = ref(false);
 const itemName = ref('');
 const conflictedItem = ref(null);
 const pendingChange = ref(0)
+const refreshInterval = 10000;
+const apiPath = "http://localhost:3000";
 
 // Amikor a komponens mounted lifecycle hook-ra kerül, lekéri az aktuális adatokat a szerverről.
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:3000/api/inventory');
+    const response = await fetch(apiPath + '/api/inventory');
     showAlert.value = false;
 
     const inventoryData = await response.json();
@@ -51,11 +53,24 @@ onMounted(async () => {
   }
 });
 
+
+// A kliens 10 másodpercenként elküld egy GET kérést a szerver felé, és frissíti az adatokat az alkalmazásba.
+setInterval(async () => {
+  try {
+    const response = await fetch(apiPath + '/api/inventory');
+    const inventoryData = await response.json();
+
+    data.value = inventoryData;
+  } catch (error) {
+
+  }
+}, refreshInterval);
+
 // Megkapja a gyermekkomponenstől a változtatást, és elküldi a szervernek a frissítési kérést.
 // Ha a szerver ütközést észlelt megjeleníti a figyelmeztetést.
 async function sendUpdateToServer(updatedItem) {
   try {
-    const response = await fetch('http://localhost:3000/api/inventory/update', {
+    const response = await fetch(apiPath + '/api/inventory/update', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -119,7 +134,7 @@ async function mergeQuantities() {
   };
 
   try {
-    const response = await fetch('http://localhost:3000/api/inventory/update', {
+    const response = await fetch(apiPath + '/api/inventory/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(mergedItem),
