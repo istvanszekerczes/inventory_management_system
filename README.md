@@ -10,6 +10,8 @@ Lehetőséget biztosít a raktárkészleten tárolt termékek mennyiségének n�
 
 A szerver 10 másodpercenként véletlenszerűen kiválaszt egy tárgyat, és ennek mennyiségét megváltoztatja pozitív vagy negatív irányba, majd frissíti a tárgyhoz tartozó Timestamp-et.
 
+A kliens 10 másodpercenként egy get kérést küld a szervernek, és frissíti a megjelenő adatokat.
+
 A kliens oldal optimista frissitést alkalmaz, tehát a felhasználói interakcióra egyből megváltozik a UI, majd a frissítést elküldi a szervernek, ami ellenőrzi, hogy ütközés történt-e. Ha ütközés történt, akkor elküldi a kliensnek válaszban a szerver oldali állapotát az adott terméknek. Ezután a felhasználónak el kell döntenie, hogy szeretné-e összefűzni a szerver oldali állapotot a változtatással, vagy a változtatást inkább elvétené, ilyenkor csak frissíti a UI-t a szerver oldali állapottal.
 
 Előnyei:
