@@ -8,7 +8,7 @@ Az oldal betöltéskor listázza az összes termék adatait, amiket a szerver ol
 
 Lehetőséget biztosít a raktárkészleten tárolt termékek mennyiségének növelésére és csökkentésére léptetve.
 
-A szerver oldalon 10 másodpercenként egy véletlenszerű tárgynak a mennyiségét véletlenszerűen csökkenti eggyel, ezzel szimulálva azt, hogy a raktárkészlet változik.
+A szerver 10 másodpercenként véletlenszerűen kiválaszt egy tárgyat, és ennek mennyiségét megváltoztatja pozitív vagy negatív irányba, majd frissíti a tárgyhoz tartozó Timestamp-et.
 
 A kliens oldal optimista frissitést alkalmaz, tehát a felhasználói interakcióra egyből megváltozik a UI, majd a frissítést elküldi a szervernek, ami ellenőrzi, hogy ütközés történt-e. Ha ütközés történt, akkor elküldi a kliensnek válaszban a szerver oldali állapotát az adott terméknek. Ezután a felhasználónak el kell döntenie, hogy szeretné-e összefűzni a szerver oldali állapotot a változtatással, vagy a változtatást inkább elvétené, ilyenkor csak frissíti a UI-t a szerver oldali állapottal.
 
